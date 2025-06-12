@@ -21,38 +21,35 @@ function Ready(props) {
     });
 
     const [isName, setIsName] = useState();
-    const [isText, setIsText] = useState();
-    const [isValidNumber, setIsValidNumber] = useState("");
+        const [isText, setIsText] = useState();
 
-    function handleFormSubmit(data, isSource) {
+
+    function handleFormSubmit(data) {
         props.onSend({
             name: data.name,
             phone: data.phone,
             message: data.message,
             communication: data.communication,
-        }, isSource);
-        clearForm();
+        });
+        closePopup();
     }
 
     const onSubmit = (data, e) => {
-        const isSource = "form";
         e.preventDefault();
-        handleFormSubmit(data, isSource);
+        handleFormSubmit(data);
     }
 
-    function clearForm() {
+    function closePopup() {
         document.querySelector(".form-user-data").value = "";
         document.querySelector(".PhoneInputInput").value = "";
         document.querySelector(".popup-textarea").value = "";
-        document.querySelector("#popup-phone").value = "";
         setIsName();
         setIsText();
-        setIsValidNumber();
     }
 
     function changeInputName(val) {
         if (val.length > 1 && val.length < 31) {
-            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/.test(val)) {
+            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ,.!?;:"'@#$%^&*()_+=]+$/.test(val)) {
                 return setIsName(true);
             }
         }
@@ -61,7 +58,7 @@ function Ready(props) {
 
     function changeInputText(val) {
         if (val.length > 1 && val.length < 31) {
-            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/.test(val)) {
+            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ,.!?;:"'@#$%^&*()_+=]+$/.test(val)) {
                 return setIsText(true);
             }
         }
@@ -73,12 +70,12 @@ function Ready(props) {
             <h2 className="section-title ready-title">Готовы начать?<br />Первый шаг за вами!</h2>
             <form action="" className="ready-form" onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-user-data-container">
-                    <input type="text" maxLength="30" className={`form-user-data ${errors?.name ? "form-user-data-error" : isName ? "form-user-data-ok" : ""}`} placeholder='Введите имя'
+                    <input type="text" maxLength="30" className={`form-user-data ${errors?.name ? "form-user-data-error" :  isName ? "form-user-data-ok" : ""}`} placeholder='Введите имя'
                         {...register("name", {
                             required: true,
                             validate: (input) => changeInputName(input),
                             pattern: {
-                                value: /^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/,
+                                value: /^[0-9а-яА-ЯёЁa-zA-Z\- ,.!?;:"'@#$%^&*()_+=]+$/,
                             },
                             minLength: {
                                 value: 2,
@@ -93,7 +90,6 @@ function Ready(props) {
                         control={control}
                         rules={{
                             validate: (value) => {
-                                setIsValidNumber(isValidPhoneNumber((value ?? 0).toString()));
                                 isValidPhoneNumber((value ?? 0).toString())
                             },
                             required: true
@@ -101,7 +97,7 @@ function Ready(props) {
                         render={({ field: { onChange, value } }) => (
                             <PhoneInput
                                 required
-                                className={`form-user-data ${isValidNumber === "" ? "" : isValidNumber ? "popup-user-data-ok" : "popup-user-data-error"}`}
+                                className={`form-user-data ${isValidPhoneNumber((value ?? 0).toString()) ? "form-user-data-ok" : "form-user-data-error"}`}
                                 displayInitialValueAsLocalNumber
                                 international
                                 value={value}
@@ -137,8 +133,8 @@ function Ready(props) {
                         <input type="radio" name="telegramm" value="telegramm" className="form-callback-type" {...register("communication")} />Написать в Телеграм
                     </label>
                 </div>
-                <button type="submit" className="form-submit-btn" disabled={!isValid === true || !isValidNumber === true}>Отправить заявку</button>
-                <p className="form-policy-text">Нажимая кнопку “отправить заявку”, вы соглашаетесь <Link href="#" className="form-policy-underline" target='_blank' rel="noopener noreferrer">с политикой конфиденциальности</Link>.</p>
+                <button type="submit" className="form-submit-btn" >Отправить заявку</button>
+                <p className="form-policy-text">Нажимая кнопку “отправить заявку”, вы соглашаетесь <Link href="#" className="form-policy-underline">с политикой конфиденциальности</Link>.</p>
             </form>
         </section>
     );
