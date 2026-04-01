@@ -51,21 +51,11 @@ function Ready(props) {
     }
 
     function changeInputName(val) {
-        if (val.length > 1 && val.length < 31) {
-            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/.test(val)) {
-                return setIsName(true);
-            }
-        }
-        return
+        return setIsName(true);
     }
 
     function changeInputText(val) {
-        if (val.length > 1 && val.length < 31) {
-            if (/^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/.test(val)) {
-                return setIsText(true);
-            }
-        }
-        return
+        return setIsText(true);
     }
 
     return (
@@ -78,7 +68,7 @@ function Ready(props) {
                             required: true,
                             validate: (input) => changeInputName(input),
                             pattern: {
-                                value: /^[0-9а-яА-ЯёЁa-zA-Z\- ]+$/,
+                                value: /^[0-9а-яА-ЯёЁa-zA-Z\- ,.!?;:"'@#$%^&*()_+=]+$/,
                             },
                             minLength: {
                                 value: 2,
@@ -118,11 +108,14 @@ function Ready(props) {
                     {...register("message", {
                         required: true,
                         validate: (input) => changeInputText(input),
+                        pattern: {
+                            value: /^[0-9а-яА-ЯёЁa-zA-Z\- ,.!?;:"'@#$%^&*()_+=]+$/,
+                        },
                         minLength: {
                             value: 2,
                         },
                         maxLength: {
-                            value: 1000,
+                            value: 300,
                         }
                     })}
                 />

@@ -93,9 +93,9 @@ function HelpYou() {
 
     const handleSwipe = useCallback(({ deltaX, deltaY }) => {
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            if (deltaX > 0) {
+            if (deltaX < 0) {
                 return clickSlider("right");
-            } else if (deltaX < 0) {
+            } else if (deltaX > 0) {
                 return clickSlider("left");
             }
         }
